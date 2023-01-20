@@ -24,14 +24,13 @@ nav{
 }
 .button:hover{
     color: #363636;
-    background-color: white;
     padding: 15px;
     border: 1px solid white;
 }
 button{
     color: white;
-    border: 1px solid white;
     padding: 11px 15px 11px 15px;;
+    margin: 1px;
 }
 button:hover{
     background-color: white;
@@ -73,6 +72,6 @@ button:hover{
     background-color: #363636;
 }
 .zero{
-    color: black;
+    color: #363636;
     background-color: #363636;
 }
