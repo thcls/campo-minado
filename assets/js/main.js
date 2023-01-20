@@ -1,15 +1,93 @@
 document.addEventListener("mousedown", click)
-
+let minesweeper = []
 const level = ['EXPERTE','INICIANTE', 'INTERMEDIARIO']
 let firstClick = true
-let bombsPosition = []
 let gameover = false
-let flags = []
-
+function square(element){
+   const squar = {
+        bomb: false,
+        flag: false,
+        open: false,
+        bombQtd: 0,
+        element: element,
+        get bombF(){
+            return this.bomb
+        },
+        putFlag(){
+            if(!this.open){
+                this.flag = true
+                this.element.style.backgroundImage = "url('assets/images/icons/flag.png')"
+                this.element.style.backgroundSize = 'cover'
+            }
+        },
+        removeFlag(){
+            this.flag = false
+            this.element.style.backgroundImage = 'O'
+        },
+        putBomb(){
+            this.bomb = true
+        },
+        revealBomb(){
+            this.element.style.backgroundImage = "url('assets/images/icons/bomb.png')"
+            this.element.style.backgroundSize = 'cover'
+        },
+        putColor(){
+            this.element.innerText = this.bombQtd
+            
+            switch(this.bombQtd){
+                case 0:
+                    this.element.classList.add('zero')
+                    break
+                case 1:
+                    this.element.classList.add('one')
+                    break
+                case 2:
+                    this.element.classList.add('two')
+                    break
+                case 3:
+                    this.element.classList.add('three')
+                    break
+                case 4:
+                    this.element.classList.add('four')
+                    break
+                case 5:
+                    this.element.classList.add('five')
+                    break
+                case 6:
+                    this.element.classList.add('six')
+                    break
+                case 7:
+                    this.element.classList.add('seven')
+                    break
+                case 8:
+                    this.element.classList.add('eight')
+                    break
+            }
+        },
+        click(){
+            if(this.flag){
+                return false
+            }else if(this.bomb){
+                this.boom()
+                return true
+            }else{
+                this.open = true
+                return false
+            }
+        },
+        boom(){
+            this.element.style.backgroundImage = "url('assets/images/icons/explosion.png')"
+            this.element.style.backgroundSize = 'cover'
+        },
+    };
+    return squar
+}
 function click(event){
     let element = event.target
+    
     if (element.innerText === 'START') {
-        generateField(getDificult(level)[0])
+        let configs = getDificult(level)
+        generateField(configs[0])
         firstClick = true
     }else if(element.innerText === 'RESET'){
         alert('eeeeeee')
@@ -20,31 +98,60 @@ function click(event){
         level.push(aux)
         dificult.innerText = level[0]
     }
-    else if(element.innerText === '|' && event.buttons === 2){
-        console.log(event,event.target)
+    else if(element.innerText === 'O' && event.buttons === 2){
         let clicked = clickField(element)
         putFlag(clicked, element)
     }
-    else if(element.innerText === '|'){
-        if(firstClick){
-            armBombs(getDificult(level))
-            firstClick = false
-        }
+    else if(element.innerText === 'O'){
         let clicked = clickField(element)
-        game(clicked)
+        let configs = getDificult(level)
+        console.log(firstClick)
+        if(firstClick){
+            try{
+                armBombs(getDificult(level), clicked)
+                firstClick = false
+            }catch(error){
+                firstClick = true
+                console.log(error)
+            }
+        }
+        try{
+            game(clicked, configs[0])
+        }catch{
+            
+        }
     }
 }
-function armBombs(dificult){
-    let [tam, bombsQtd] = dificult
-    bombsPosition = []
-    let i = 0
-    while(i<bombsQtd){
-        let position = `b${randomNum(tam)}|${randomNum(tam)}`
-        let found = bombsPosition.find(element => element === position)
-        if (found){
+function around(position, clicked){
+    let [x1, y1] = clicked
+    let [x2, y2] = position
+    x2 = Number(x2)
+    y2 = Number(y2)
+    let h = []
+    for(let i = -1;i < 2; i++){
+        for(let j = -1;j < 2;j++){
+            if(x2===(x1+i)&& y2===(y1+j)){
+                return true
+            }
+        }
+    }
+    return false    
+}
+function armBombs(dificult, clicked){
+    let [tam, bombQtd] = dificult
+    let i = 0;
+    
+    while(i < bombQtd){
+        let y = randomNum(tam)
+        let x = randomNum(tam)
+        
+        let square = minesweeper[x][y]
+        
+        if (square.bomb || around([x,y], clicked)){
             continue
         }else{
-            bombsPosition.push(position)
+            square.putBomb()
+            square.revealBomb()
             i++
         }
     }
@@ -54,53 +161,64 @@ function clickField(element){
     let grandfather = parent.parentNode
     let line, column;
     
-    line = parent.classList.value.slice(2)
-    column = grandfather.classList.value.slice(2)
-    let clicked = column+'|'+line
+    line = parent.classList.value.slice(1)
+    column = grandfather.classList.value.slice(1)
+
+    let clicked = [Number(column),Number(line)]
 
     return clicked
 }
-function putFlag(clicked, element){
-    if(!findFlag(clicked)){
-        flags.push('f'+clicked)
-        let imgFlag = document.createElement('img')
-        imgFlag.src = 'assets/images/icons/flag.png'
-        element.style.backgroundImage = "url('assets/images/icons/flag.png')"
-        element.style.backgroundSize = 'cover'
-    }else{
-        element.innerHTML = '|'
+function game(clicked,tam) {
+    let [x,y] = clicked
+    let square = minesweeper[x][y]
+    reveal(clicked, tam, square)
+    if (gameover){
+        gameOver()
     }
 }
-function findFlag(clicked){
-    clicked = 'f'+clicked
-    for(flag of flags){
-        if (clicked === flag){
-            return true
+function reveal(clicked, tam, square){
+    let [x,y] = clicked
+    let position;
+    let bombNum = 0
+    if(square.open || square.bomb){
+        
+        return true
+    }
+    square.click()
+    
+    for(let i = -1;i < 2; i++){
+        for(let j = -1;j < 2;j++){
+            
+            if(x + i < tam && x + i >= 0 && y + j < tam && y + j >= 0){
+                position = minesweeper[x + i][y + j]
+                if(position.bomb){
+                    bombNum += 1
+                }
+            }
+        }
+    }
+    square.bombQtd = bombNum
+    square.putColor()
+    if (bombNum === 0){
+        rereveal(x,y,tam)
+    }
+}
+function rereveal(x,y,tam){
+    let position
+    for(let i = -1;i < 2; i++){
+        for(let j = -1;j < 2;j++){
+            if(x + i < tam && x + i >= 0 && y + j < tam && y + j >= 0){
+                position = minesweeper[x + i][y + j]
+                reveal([x + i, y + j], tam, position)
+            }
         }
     }
 }
-function findBomb(clicked){
-    clicked = 'b'+clicked
-    for(bomb of bombsPosition){
-        if (clicked === bomb){
-            return true
-        }
-    }
+function gameOver(){
+    const field = document.querySelector('.field')
+    field.innerHTML = ''
 }
-function game(clicked, element) {
-    if (findFlag(clicked)){
-    }
-    else if (findBomb(clicked)){
-        element.style.backgroundImage = "url('assets/images/icons/explosion.png')"
-        element.style.backgroundSize = 'cover'
-        gameover = true
-        return
-    }else{
-        reveal()
-    }
-
-}
-function reveal(){
+function endReveal(){
 
 }
 function crono(){
@@ -140,22 +258,32 @@ function getDificult(level){
     return [tam,bombsQtd]
 }
 function randomNum(floor){
+    floor -= 1
     return (Math.random()*floor).toFixed(0)
 }
 function generateField(dificult){
     const field = document.querySelector('.field')
     field.innerHTML = ''
+
+    minesweeper = []
+
     for(let i=0;i<dificult;i++){
         let tr = document.createElement('tr')
-        tr.classList.add(`.c${i}`)
+        let line = []
+        tr.classList.add(`c${i}`)
+        
         for(let j=0;j<dificult;j++){
             let td = document.createElement('td')
-            td.classList.add(`.c${j}`)
+            td.classList.add(`l${j}`)
             let button = document.createElement('button')
-            button.innerText = '|'
+            button.innerText = 'O'
             td.appendChild(button)
+
             tr.appendChild(td)
+            line.push(square(button))
         }
+
         field.appendChild(tr)
+        minesweeper.push(line)
     }
 }
