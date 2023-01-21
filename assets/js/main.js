@@ -1,8 +1,12 @@
 document.addEventListener("mousedown", click)
+document.addEventListener("contextmenu", e => e.preventDefault());
 let minesweeper = []
 const level = ['EXPERTE','INICIANTE', 'INTERMEDIARIO']
+let bombs = 0;
+let squares;
 let firstClick = true
 let gameover = false
+let cronometro
 function square(element){
    const squar = {
         bomb: false,
@@ -13,23 +17,37 @@ function square(element){
         get bombF(){
             return this.bomb
         },
-        putFlag(){
+        putFlag(bombs){
             if(!this.open){
-                this.flag = true
-                this.element.style.backgroundImage = "url('assets/images/icons/flag.png')"
-                this.element.style.backgroundSize = 'cover'
+                if(!this.flag){
+                    this.flag = true
+                    this.element.style.backgroundImage = "url('assets/images/icons/flag.png')"
+                    this.element.style.backgroundSize = 'cover'
+                    if(this.bomb){
+                        bombs--
+                    }
+                }else{
+                    this.removeFlag()
+                    if(this.bomb){
+                        bombs++
+                    }
+                }
             }
+            console.log(bombs)
+            return bombs
         },
         removeFlag(){
             this.flag = false
-            this.element.style.backgroundImage = 'O'
+            this.element.style.backgroundImage = ''
         },
         putBomb(){
             this.bomb = true
         },
         revealBomb(){
-            this.element.style.backgroundImage = "url('assets/images/icons/bomb.png')"
-            this.element.style.backgroundSize = 'cover'
+            if(this.bomb && !this.flag){
+                this.element.style.backgroundImage = "url('assets/images/icons/bomb.png')"
+                this.element.style.backgroundSize = 'cover'
+            }
         },
         putColor(){
             this.element.innerText = this.bombQtd
@@ -64,16 +82,17 @@ function square(element){
                     break
             }
         },
-        click(){
+        click(squares){
             if(this.flag){
-                return false
+                return squares
             }else if(this.bomb){
                 this.boom()
-                return true
+                return false
             }else{
                 this.open = true
-                return false
+                squares--
             }
+            return squares
         },
         boom(){
             this.element.style.backgroundImage = "url('assets/images/icons/explosion.png')"
@@ -84,11 +103,19 @@ function square(element){
 }
 function click(event){
     let element = event.target
-    
+    let configs = getDificult(level)
+    let clicked
     if (element.innerText === 'START') {
-        let configs = getDificult(level)
+        clearInterval(cronometro)
+        const result = document.querySelector('.result')
+        result.innerText = ''
+        const timer = document.querySelector('.timer')
+        timer.innerHTML = '00:00.00'
         generateField(configs[0])
         firstClick = true
+        squares = configs[0]*configs[0]
+        bombs = configs[1]
+        gameover = false
     }else if(element.innerText === 'RESET'){
         alert('eeeeeee')
     }
@@ -99,20 +126,22 @@ function click(event){
         dificult.innerText = level[0]
     }
     else if(element.innerText === 'O' && event.buttons === 2){
-        let clicked = clickField(element)
-        putFlag(clicked, element)
+        clicked = clickField(element)
+        let position = minesweeper[clicked[0]][clicked[1]]
+        bombs = position.putFlag(bombs)
     }
     else if(element.innerText === 'O'){
-        let clicked = clickField(element)
-        let configs = getDificult(level)
-        console.log(firstClick)
+        clicked = clickField(element)
+        
         if(firstClick){
             try{
-                armBombs(getDificult(level), clicked)
+                armBombs(configs, clicked)
                 firstClick = false
             }catch(error){
                 firstClick = true
                 console.log(error)
+            }finally{
+                crono()
             }
         }
         try{
@@ -121,6 +150,15 @@ function click(event){
             
         }
     }
+    if(gameover){
+        clearInterval(cronometro)
+        endReveal(clicked)
+    }
+    else if (bombs === 0||squares-configs[1] === 0||squares===0){
+        clearInterval(cronometro)
+        endReveal(clicked)
+        win()
+    } 
 }
 function around(position, clicked){
     let [x1, y1] = clicked
@@ -151,7 +189,6 @@ function armBombs(dificult, clicked){
             continue
         }else{
             square.putBomb()
-            square.revealBomb()
             i++
         }
     }
@@ -171,20 +208,22 @@ function clickField(element){
 function game(clicked,tam) {
     let [x,y] = clicked
     let square = minesweeper[x][y]
-    reveal(clicked, tam, square)
-    if (gameover){
-        gameOver()
+    if(square.bomb){
+        gameover = true
+        square.boom()
+        return
     }
+    reveal(clicked, tam, square)
 }
 function reveal(clicked, tam, square){
     let [x,y] = clicked
     let position;
     let bombNum = 0
-    if(square.open || square.bomb){
+    if(square.open || square.bomb || square.flag){
         
         return true
     }
-    square.click()
+    squares = square.click(squares)
     
     for(let i = -1;i < 2; i++){
         for(let j = -1;j < 2;j++){
@@ -215,17 +254,33 @@ function rereveal(x,y,tam){
     }
 }
 function gameOver(){
-    const field = document.querySelector('.field')
-    field.innerHTML = ''
+    const result = document.querySelector('.result')
+    result.innerText = 'Você perdeu'
 }
-function endReveal(){
-
+function win(){
+    const result = document.querySelector('.result')
+    result.innerText = 'Você ganhou'
+}
+function endReveal(clicked){
+    let time = 1
+    for(let i in minesweeper){
+        for(let j in minesweeper[i]){
+            console.log(clicked,i,j)
+            time++
+            let position = minesweeper[i][j]
+            if((Number(i) !== clicked[0] || Number(j) !== clicked[1]) && position.bomb && !position.flag){
+                setTimeout(function(){
+                    position.revealBomb()
+                }, 50*time)
+            }
+        }
+    }
 }
 function crono(){
     let time = new Date(0)
     clearInterval(cronometro)
     const timer = document.querySelector('.timer')
-    const cronometro = setInterval(function(){
+    cronometro = setInterval(function(){
         time.setMilliseconds(time.getMilliseconds()+10)
         timer.innerHTML = `${time.toLocaleTimeString('pt-BR',{hour12:false,timeZone:'GMT'}).slice(3)}.${getHundredth(time)}`
     }, 10)
@@ -252,7 +307,7 @@ function getDificult(level){
         tam = 16
         bombsQtd = 40
     }else{
-        tam = 32
+        tam = 16
         bombsQtd = 100
     }
     return [tam,bombsQtd]
