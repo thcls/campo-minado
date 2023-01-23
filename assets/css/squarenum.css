@@ -1,47 +1,41 @@
-.field{
-    color: white;
+table button{
+    color: rgba(0, 0, 0, 0);
+    padding: 11px 15px 11px 15px;;
+    margin: 1px;
+    border-radius: 8px;
+}
+table button:hover{
+    transform: scale(1.10);
+}
+.zero,.one,.two,.three,.four,.five,.six,.seven,.eight{
+    background-color: #363636;
+    font-weight: bolder;
+    transform: none;
 }
 .eight{
     color: gray;
-    background-color: #363636;
-    font-weight: bolder;
 }
 .seven{
     color: blueviolet;
-    background-color: #363636;
-    font-weight: bolder;
 }
 .six{
     color: darkturquoise;
-    background-color: #363636;
-    font-weight: bolder;
 }
 .five{
     color: yellow;
-    background-color: #363636;
-    font-weight: bolder;
 }
 .four{
     color: blueviolet;
-    background-color: #363636;
-    font-weight: bolder;
 }
 .three{
     color:crimson;
-    background-color: #363636;
-    font-weight: bolder;
 }
 .two{
     color: green;
-    background-color: #363636;
-    font-weight: bolder;
 }
 .one{
     color: blue;
-    background-color: #363636;
-    font-weight: bolder;
 }
 .zero{
     color: rgba(0, 0, 0, 0);
-    background-color: #363636;
 }
