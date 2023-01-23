@@ -15,56 +15,59 @@ function click(event){
     let element = event.target
     let configs = getDificult(level)
     let clicked
+
     if (element.innerText === 'START') {
-        crono.cronoZero()
-        defineText('.result', '')
-        generateField(configs[0])
-        firstClick = true
-        squares = configs[0]*configs[0]
-        bombs = configs[1]
-        gameover = false
+        start(configs)
     }
     else if(element.innerText === 'DIFICULT'||element.innerText === level[0]){
-        let aux = level.shift()
-        defineText('.dificult', level[0])
-        level.push(aux)
+        dificult(level)
     }
     else if(gameover){
-        
     }
     else if(element.innerText === 'O' && event.buttons === 2){
-        clicked = clickField(element)
-        let position = minesWeeper[clicked[0]][clicked[1]]
-        bombs = position.putFlag(bombs)
+        rightClick(element)
     }
     else if(element.innerText === 'O'){
         clicked = clickField(element)
-        
-        if(firstClick){
-            try{
-                armBombs(configs, clicked)
-                firstClick = false
-            }catch(error){
-                firstClick = true
-                console.log(error)
-            }finally{
-                crono.cronoStart()
+        if(!isNaN(clicked[0] && !isNaN(clicked[1]))){
+            if(firstClick){
+                try{
+                    armBombs(configs, clicked)
+                    firstClick = false
+                    crono.cronoStart()
+                }catch(error){
+                    firstClick = true
+                    console.log(error)
+                }
             }
-        }
-        try{
             game(clicked, configs[0])
-        }catch(error){
-            console.log(error)
         }
+                
     }
-    if (!firstClick){
-        if(gameover){
-            gameOver(clicked)
-        }
-        else if (bombs === 0||squares-configs[1] === 0){
+    if (!firstClick && !gameover){
+        if (bombs === 0||squares-configs[1] === 0){
             win(clicked)
         } 
     }
+}
+function rightClick(element){
+    let clicked = clickField(element)
+    let position = minesWeeper[clicked[0]][clicked[1]]
+    bombs = position.putFlag(bombs)
+}
+function start(configs){
+    crono.cronoZero()
+    defineText('.result', '')
+    generateField(configs[0])
+    firstClick = true
+    squares = configs[0]*configs[0]
+    bombs = configs[1]
+    gameover = false
+}
+function dificult(level){
+    let aux = level.shift()
+    defineText('.dificult', level[0])
+    level.push(aux)
 }
 function around(position, clicked){
     let [x1, y1] = clicked
@@ -118,8 +121,7 @@ function game(clicked,tam) {
     let [x,y] = clicked
     let square = minesWeeper[x][y]
     if(square.bomb){
-        gameover = true
-        square.boom()
+        gameOver(clicked, square)
         return
     }
     reveal(clicked, tam, square)
@@ -128,8 +130,8 @@ function reveal(clicked, tam, square){
     let [x,y] = clicked
     let position;
     let bombNum = 0
+    
     if(square.open || square.bomb || square.flag){
-        
         return true
     }
     squares = square.click(squares)
@@ -162,16 +164,22 @@ function rereveal(x,y,tam){
         }
     }
 }
-function gameOver(clicked){
+function gameOver(clicked, square){
+    gameover = true
     crono.cronoStop(gameover)
+    let explosion = new Audio('/assets/sounds/NenadSimic - Muffled Distant Explosion.wav')
+    square.boom()
+    explosion.play()
     defineText('.result','Você perdeu')
     endReveal(clicked)
 }
 function win(clicked){
     crono.cronoStop(gameover)
+    let winBell = new Audio('/assets/sounds/hjm-glass_bell_1.wav')
+    winBell.play()
     defineText('.result','Você ganhou')
-    endReveal(clicked)
     gameover = true
+    
 }
 function endReveal(clicked){
     let time = 1
@@ -208,10 +216,9 @@ function randomNum(floor){
     return (Math.random()*floor).toFixed(0)
 }
 function generateField(dificult){
+    minesWeeper = []
     const field = document.querySelector('.field')
     field.innerHTML = ''
-
-    minesWeeper = []
 
     for(let i=0;i<dificult;i++){
         let tr = document.createElement('tr')
