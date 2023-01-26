@@ -23,17 +23,20 @@ export function getHundredth(time){
 export function cronoStop(gameOver){
     clearInterval(cronometro)
     const timer = document.querySelector('.timer')
+    const status = document.querySelector('.status')
     if(gameOver){
-        timer.style.color = '#FF0000'
+        status.style.color = timer.style.color = '#FF0000'
     }else{
-        timer.style.color = '#008000'
+        status.style.color = timer.style.color = '#008000'
     }
 }
 export function cronoZero(){
     clearInterval(cronometro)
     const result = document.querySelector('.result')
     result.innerText = ''
+    const status = document.querySelector('.status')
     const timer = document.querySelector('.timer')
-    timer.style.color = '#FFFFFF'
+    status.style.color = timer.style.color = '#FFFFFF'
+    
     timer.innerHTML = '00:00.00'
 }

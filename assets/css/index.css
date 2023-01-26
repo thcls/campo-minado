@@ -25,10 +25,14 @@ nav{
     border-radius: 8px;
     font-weight: bolder;
 }
-.timer{
+.status{
     text-align: center;
+}
+.timer, .bomb-qtd{
     font-size: 20px;
-    color: white;
+    
+    display: inline-block;
+    margin: 10px 40px 20px 40px;
 }
 .button:hover{
     color: #363636;
