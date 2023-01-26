@@ -17,18 +17,19 @@ export function square(element){
                      if(this.bomb){
                          bombs--
                      }
-                 }else{
-                     this.removeFlag()
-                     if(this.bomb){
-                         bombs++
-                     }
                  }
              }
              return bombs
          },
-         removeFlag(){
-             this.flag = false
-             this.element.style.backgroundImage = ''
+         removeFlag(bombs){
+            if(!this.open){
+                if(this.bomb){
+                    bombs++
+                }
+                this.flag = false
+                this.element.style.backgroundImage = ''
+            }
+            return bombs
          },
          putBomb(){
              this.bomb = true

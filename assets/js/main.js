@@ -7,53 +7,85 @@ let bombs = 0;
 let squares;
 let firstClick = true
 let gameover = false
+let bombnumber = 0
 
-document.addEventListener("mousedown", click)
-document.addEventListener("contextmenu", e => {if(e.target.innerText === 'O') {e.preventDefault()}});
 
-function click(event){
-    let element = event.target
-    let configs = getDificult(level)
-    let clicked
 
-    if (element.innerText === 'START') {
-        start(configs)
-    }
-    else if(element.innerText === 'DIFICULT'||element.innerText === level[0]){
-        dificult(level)
-    }
-    else if(gameover){
-    }
-    else if(element.innerText === 'O' && event.buttons === 2){
+document.addEventListener("click", click)
+document.addEventListener("contextmenu", event => {
+    const element = event.target
+    
+    if(element.innerText === 'O') {
+        event.preventDefault()
         rightClick(element)
     }
-    else if(element.innerText === 'O'){
-        clicked = clickField(element)
-        if(!isNaN(clicked[0] && !isNaN(clicked[1]))){
-            if(firstClick){
-                try{
-                    armBombs(configs, clicked)
-                    firstClick = false
-                    crono.cronoStart()
-                }catch(error){
-                    firstClick = true
-                    console.log(error)
+});
+
+function click(event){
+    const element = event.target
+    const configs = getDificult(level)
+    let clicked
+
+
+    const button = {
+        START: function(){
+            start(configs)
+        },
+        DIFICULT: function(){
+            dificult(level)
+        },
+        INICIANTE: function(){
+            dificult(level)
+        },
+        INTERMEDIARIO: function(){
+            dificult(level)
+        },
+        EXPERTE: function(){
+            dificult(level)
+        },
+        O: function(){
+            
+            clicked = clickField(element)
+            if(!isNaN(clicked[0] && !isNaN(clicked[1]))){
+                if(firstClick){
+                    try{
+                        armBombs(configs, clicked)
+                        firstClick = false
+                        crono.cronoStart()
+                    }catch(error){
+                        firstClick = true
+                        console.log(error)
+                    }
+                }
+                if(!gameover){
+                    game(clicked, configs[0])
                 }
             }
-            game(clicked, configs[0])
         }
-                
+    }
+    if(button[element.innerText]){
+        const func = button[element.innerText]
+        func()
     }
     if (!firstClick && !gameover){
         if (bombs === 0||squares-configs[1] === 0){
-            win(clicked)
+            win()
         } 
     }
 }
 function rightClick(element){
-    let clicked = clickField(element)
-    let position = minesWeeper[clicked[0]][clicked[1]]
-    bombs = position.putFlag(bombs)
+    if (!gameover){
+        let clicked = clickField(element)
+        let position = minesWeeper[clicked[0]][clicked[1]]
+        if(position.flag){
+            bombnumber++
+            bombs = position.removeFlag(bombs)
+        }else{
+            bombnumber--
+            bombs = position.putFlag(bombs)
+        }
+        defineText('.bomb-qtd', bombnumber)
+    }
 }
 function start(configs){
     crono.cronoZero()
@@ -61,7 +93,8 @@ function start(configs){
     generateField(configs[0])
     firstClick = true
     squares = configs[0]*configs[0]
-    bombs = configs[1]
+    bombnumber = bombs = configs[1]
+    defineText('.bomb-qtd', bombnumber)
     gameover = false
 }
 function dificult(level){
@@ -173,7 +206,7 @@ function gameOver(clicked, square){
     defineText('.result','Você perdeu')
     endReveal(clicked)
 }
-function win(clicked){
+function win(){
     crono.cronoStop(gameover)
     let winBell = new Audio('/assets/sounds/hjm-glass_bell_1.wav')
     winBell.play()
