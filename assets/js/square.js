@@ -8,28 +8,20 @@ export function square(element){
          get bombF(){
              return this.bomb
          },
-         putFlag(bombs){
+         putFlag(){
              if(!this.open){
                  if(!this.flag){
                      this.flag = true
                      this.element.style.backgroundImage = "url('assets/images/icons/flag.png')"
                      this.element.style.backgroundSize = 'cover'
-                     if(this.bomb){
-                         bombs--
-                     }
                  }
              }
-             return bombs
          },
-         removeFlag(bombs){
+         removeFlag(){
             if(!this.open){
-                if(this.bomb){
-                    bombs++
-                }
                 this.flag = false
                 this.element.style.backgroundImage = ''
             }
-            return bombs
          },
          putBomb(){
              this.bomb = true

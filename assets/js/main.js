@@ -3,7 +3,6 @@ import {square as square} from "./square.js";
 
 let minesWeeper = []
 const level = ['EXPERTE','INICIANTE', 'INTERMEDIARIO']
-let bombs = 0;
 let squares;
 let firstClick = true
 let gameover = false
@@ -25,7 +24,6 @@ function click(event){
     const element = event.target
     const configs = getDificult(level)
     let clicked
-
 
     const button = {
         START: function(){
@@ -68,7 +66,7 @@ function click(event){
         func()
     }
     if (!firstClick && !gameover){
-        if (bombs === 0||squares-configs[1] === 0){
+        if (squares-configs[1] === 0){
             win()
         } 
     }
@@ -79,10 +77,10 @@ function rightClick(element){
         let position = minesWeeper[clicked[0]][clicked[1]]
         if(position.flag){
             bombnumber++
-            bombs = position.removeFlag(bombs)
+            position.removeFlag()
         }else{
             bombnumber--
-            bombs = position.putFlag(bombs)
+            position.putFlag()
         }
         defineText('.bomb-qtd', bombnumber)
     }
@@ -93,7 +91,7 @@ function start(configs){
     generateField(configs[0])
     firstClick = true
     squares = configs[0]*configs[0]
-    bombnumber = bombs = configs[1]
+    bombnumber = configs[1]
     defineText('.bomb-qtd', bombnumber)
     gameover = false
 }
