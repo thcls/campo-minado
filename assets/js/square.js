@@ -1,10 +1,14 @@
 export function square(element){
+    const flagImg = "url('assets/images/icons/flag.png')"
+    const bombImg = "url('assets/images/icons/bomb.png')"
+    const explosionImg = "url('assets/images/icons/explosion.png')"
     const squar = {
          bomb: false,
          flag: false,
          open: false,
          bombQtd: 0,
          element: element,
+
          get bombF(){
              return this.bomb
          },
@@ -12,7 +16,7 @@ export function square(element){
              if(!this.open){
                  if(!this.flag){
                      this.flag = true
-                     this.element.style.backgroundImage = "url('assets/images/icons/flag.png')"
+                     this.element.style.backgroundImage = flagImg
                      this.element.style.backgroundSize = 'cover'
                  }
              }
@@ -28,7 +32,7 @@ export function square(element){
          },
          revealBomb(){
              if(this.bomb && !this.flag){
-                 this.element.style.backgroundImage = "url('assets/images/icons/bomb.png')"
+                 this.element.style.backgroundImage = bombImg
                  this.element.style.backgroundSize = 'cover'
              }
          },
@@ -78,7 +82,7 @@ export function square(element){
              return squares
          },
          boom(){
-             this.element.style.backgroundImage = "url('assets/images/icons/explosion.png')"
+             this.element.style.backgroundImage = explosionImg
              this.element.style.backgroundSize = 'cover'
          },
      };
