@@ -1,16 +1,28 @@
 table button{
+    display: block;
     color: rgba(0, 0, 0, 0);
     padding: 11px 15px 11px 15px;;
-    margin: 1px;
+    margin: auto;
     border-radius: 8px;
+    box-sizing: initial;
 }
 table button:hover{
     transform: scale(1.10);
+}
+table,tr,td,button{
+    
+}
+button{
+    transition: color .2 linear;
+    transition: background-image .2 linear;
+    padding: 100%;
 }
 .zero,.one,.two,.three,.four,.five,.six,.seven,.eight{
     background-color: #363636;
     font-weight: bolder;
     transform: none;
+    margin: initial;
+    
 }
 .eight{
     color: gray;
