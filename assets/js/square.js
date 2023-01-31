@@ -85,6 +85,17 @@ export function square(element){
              this.element.style.backgroundImage = explosionImg
              this.element.style.backgroundSize = 'cover'
          },
+         question(){
+            this.removeFlag()
+            this.flag = true
+            this.element.classList.add('question')
+            this.element.innerText = '?'
+         },
+         blank(){
+            this.flag = false
+            this.element.innerText = 'O'
+            this.element.classList.remove('question')
+         },
      };
      return squar
 }

@@ -14,7 +14,7 @@ document.addEventListener("click", click)
 document.addEventListener("contextmenu", event => {
     const element = event.target
     
-    if(element.innerText === 'O') {
+    if(element.innerText === 'O'||element.innerText === '?') {
         event.preventDefault()
         rightClick(element)
     }
@@ -75,10 +75,13 @@ function rightClick(element){
     if (!gameover){
         let clicked = clickField(element)
         let position = minesWeeper[clicked[0]][clicked[1]]
-        if(position.flag){
+        if(position.element.innerText === '?'){
+            position.blank()
+        }else if(position.flag){
             bombnumber++
-            position.removeFlag()
-        }else{
+            position.question()
+        }
+        else{
             bombnumber--
             position.putFlag()
         }
@@ -209,6 +212,7 @@ function win(){
     let winBell = new Audio('/assets/sounds/hjm-glass_bell_1.wav')
     winBell.play()
     defineText('.result','Você ganhou')
+    defineText('.bomb-qtd', 0)
     gameover = true
     
 }
