@@ -1,28 +1,22 @@
 table button{
     display: block;
     color: rgba(0, 0, 0, 0);
-    padding: 11px 15px 11px 15px;;
-    margin: auto;
+    width: 45px;
+    height: 45px;
     border-radius: 8px;
-    box-sizing: initial;
 }
 table button:hover{
     transform: scale(1.10);
 }
-table,tr,td,button{
-    
-}
 button{
     transition: color .2 linear;
-    transition: background-image .2 linear;
-    padding: 100%;
 }
-.zero,.one,.two,.three,.four,.five,.six,.seven,.eight{
+.zero,.one,.two,.three,.four,.five,.six,.seven,.eight, .question{
     background-color: #363636;
     font-weight: bolder;
+    font-size: 25px;
     transform: none;
-    margin: initial;
-    
+    box-sizing: border-box;
 }
 .eight{
     color: gray;
@@ -50,4 +44,10 @@ button{
 }
 .zero{
     color: rgba(0, 0, 0, 0);
+}
+.question{
+    color: black;
+    font-size: 35px;
+    font-family: cursive;
+    background-color: white;
 }
