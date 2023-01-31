@@ -17,7 +17,9 @@ export function square(element){
                  if(!this.flag){
                      this.flag = true
                      this.element.style.backgroundImage = flagImg
-                     this.element.style.backgroundSize = 'cover'
+                     this.element.style.backgroundRepeat = 'no-repeat'
+                    this.element.style.backgroundSize = '80%'
+                    this.element.style.backgroundPosition = 'center'
                  }
              }
          },
@@ -33,7 +35,10 @@ export function square(element){
          revealBomb(){
              if(this.bomb && !this.flag){
                  this.element.style.backgroundImage = bombImg
-                 this.element.style.backgroundSize = 'cover'
+                 this.element.style.backgroundRepeat = 'no-repeat'
+                 this.element.style.backgroundSize = '80%'
+                 this.element.style.backgroundPosition = 'center'
+                 
              }
          },
          putColor(){
@@ -82,8 +87,10 @@ export function square(element){
              return squares
          },
          boom(){
-             this.element.style.backgroundImage = explosionImg
-             this.element.style.backgroundSize = 'cover'
+            this.element.style.backgroundImage = explosionImg
+            this.element.style.backgroundRepeat = 'no-repeat'
+            this.element.style.backgroundSize = '80%'
+            this.element.style.backgroundPosition = 'center'
          },
          question(){
             this.removeFlag()
