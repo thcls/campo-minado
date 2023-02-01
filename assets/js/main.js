@@ -2,13 +2,13 @@ import * as crono from "./crono.js";
 import {square as square} from "./square.js";
 
 let minesWeeper = []
-const level = ['EXPERTE','INICIANTE', 'INTERMEDIARIO']
+const level = ['INICIANTE', 'INTERMEDIARIO','EXPERTE']
 let squares;
 let firstClick = true
 let gameover = false
 let bombnumber = 0
 
-
+start(getDificult(level))
 
 document.addEventListener("click", click)
 document.addEventListener("contextmenu", event => {
@@ -85,7 +85,7 @@ function rightClick(element){
             bombnumber--
             position.putFlag()
         }
-        defineText('.bomb-qtd', bombnumber)
+        defineText('.bomb-qtd',`${String.fromCodePoint(0x1F4A3)} ${bombnumber}`)
     }
 }
 function start(configs){
@@ -95,7 +95,7 @@ function start(configs){
     firstClick = true
     squares = configs[0]*configs[0]
     bombnumber = configs[1]
-    defineText('.bomb-qtd', bombnumber)
+    defineText('.bomb-qtd',`${String.fromCodePoint(0x1F4A3)} ${bombnumber}`)
     gameover = false
 }
 function dificult(level){
@@ -154,7 +154,7 @@ function clickField(element){
 function game(clicked,tam) {
     let [x,y] = clicked
     let square = minesWeeper[x][y]
-    if(square.bomb){
+    if(square.bomb && !square.flag){
         gameOver(clicked, square)
         return
     }
@@ -212,7 +212,7 @@ function win(){
     let winBell = new Audio('/assets/sounds/hjm-glass_bell_1.wav')
     winBell.play()
     defineText('.result','Você ganhou')
-    defineText('.bomb-qtd', 0)
+    defineText('.bomb-qtd',`${String.fromCodePoint(0x1F4A3)} ${bombnumber}`)
     gameover = true
     
 }
@@ -225,26 +225,18 @@ function endReveal(clicked){
             if((Number(i) !== clicked[0] || Number(j) !== clicked[1]) && position.bomb && !position.flag){
                 setTimeout(function(){
                     position.revealBomb()
-                }, 25*time)
+                }, 20*time)
             }
         }
     }
 }
 function getDificult(level){
-    let tam;
-    let bombsQtd;
-    const dificult = level[0]
-    if (dificult === 'INICIANTE'){
-        tam = 8
-        bombsQtd = 10
-    }else if(dificult === 'INTERMEDIARIO'){
-        tam = 16
-        bombsQtd = 40
-    }else{
-        tam = 16
-        bombsQtd = 100
+    const dificult = {
+        INICIANTE: [8, 10],
+        INTERMEDIARIO: [12, 25],
+        EXPERTE: [16, 40],
     }
-    return [tam,bombsQtd]
+    return dificult[level[0]]
 }
 function randomNum(floor){
     floor -= 1
