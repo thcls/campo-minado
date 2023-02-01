@@ -12,11 +12,12 @@ button{
     transition: color .2 linear;
 }
 .zero,.one,.two,.three,.four,.five,.six,.seven,.eight, .question{
-    background-color: #363636;
+    background-color: #1C1D27;
     font-weight: bolder;
     font-size: 25px;
     transform: none;
     box-sizing: border-box;
+    font-family: sans-serif;
 }
 .eight{
     color: gray;
