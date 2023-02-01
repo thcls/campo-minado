@@ -16,10 +16,7 @@ export function square(element){
              if(!this.open){
                  if(!this.flag){
                      this.flag = true
-                     this.element.style.backgroundImage = flagImg
-                     this.element.style.backgroundRepeat = 'no-repeat'
-                    this.element.style.backgroundSize = '80%'
-                    this.element.style.backgroundPosition = 'center'
+                     this.backgroundImg(flagImg)
                  }
              }
          },
@@ -34,14 +31,10 @@ export function square(element){
          },
          revealBomb(){
              if(this.bomb && !this.flag){
-                 this.element.style.backgroundImage = bombImg
-                 this.element.style.backgroundRepeat = 'no-repeat'
-                 this.element.style.backgroundSize = '80%'
-                 this.element.style.backgroundPosition = 'center'
-                 
+                 this.backgroundImg(bombImg)
              }
          },
-         putColor(){
+        putColor(){
              this.element.innerText = this.bombQtd
              
              switch(this.bombQtd){
@@ -74,34 +67,34 @@ export function square(element){
                      break
              }
          },
-         click(squares){
+        click(squares){
              if(this.flag){
                  return squares
-             }else if(this.bomb){
-                 this.boom()
-                 return false
              }else{
                  this.open = true
                  squares--
              }
              return squares
          },
-         boom(){
-            this.element.style.backgroundImage = explosionImg
-            this.element.style.backgroundRepeat = 'no-repeat'
-            this.element.style.backgroundSize = '80%'
-            this.element.style.backgroundPosition = 'center'
+        boom(){
+            this.backgroundImg(explosionImg)
          },
-         question(){
+        question(){
             this.removeFlag()
             this.flag = true
             this.element.classList.add('question')
             this.element.innerText = '?'
          },
-         blank(){
+        blank(){
             this.flag = false
             this.element.innerText = 'O'
             this.element.classList.remove('question')
+         },
+        backgroundImg(img){
+            this.element.style.backgroundImage = img
+            this.element.style.backgroundRepeat = 'no-repeat'
+            this.element.style.backgroundSize = '80%'
+            this.element.style.backgroundPosition = 'center'
          },
      };
      return squar
