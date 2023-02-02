@@ -92,3 +92,15 @@ h1{
     text-align: left;
     margin-left: 40%;
 }
+.thcls{
+    margin-top: 10em;
+}
+a:link {
+    color: #CA3C68;
+}
+a:visited {
+    color: #CA3C68;
+}
+a:hover {
+    color: blue;
+}
