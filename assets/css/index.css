@@ -8,9 +8,10 @@ body{
     text-align: center;
     box-sizing: border-box;
     position: fixed;
-    border: 4px #EEECE9 solid;
+    border: 4px #F5F2F1 solid;
     background-color: #F5F2F1;
     box-shadow: 2px 2px #F5F2F1;
+    border-radius: 28px;
 }
 .camp{
     width: 70%;
@@ -39,20 +40,40 @@ h1{
 }
 .result{
     text-align: center;
-    color:white;
+    color: black;
     font-size: 20px;
+    border:4px #CA3C68 solid;
+    width: 300px;
+    border-radius: 10px;
+    margin-left: 21%;
+    padding: 10px;
+
 }
 
 .status{
+    color: #000000;
+    background-color: #F5F2F1;
     text-align: center;
+    transition: color .2 linear;
+    border-radius: 18px;
+    margin-left: 32%;
+    margin-bottom: 10px;
+    height: 100px;
+    width: 480px;
+    box-sizing: border-box;
 }
 .timer, .bomb-qtd{
     font-size: 35px;
-    transition: color .2 linear;
     display: inline-block;
-    margin: 40px;
     font-family: sans-serif;
     font-weight: bolder;
+}
+.timer{
+    width: 200px;
+}
+.bomb-qtd{
+    width: 100px;
+    box-sizing: border-box;
 }
 .button:hover{
     transform: scale(1.2);
@@ -66,4 +87,8 @@ h1{
 .best-time{
     font-size: 25px;
     margin-top: 5em;
+}
+.place{
+    text-align: left;
+    margin-left: 40%;
 }
