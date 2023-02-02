@@ -2,7 +2,7 @@ export function square(element){
     const flagImg = "url('assets/images/icons/flag.png')"
     const bombImg = "url('assets/images/icons/bomb.png')"
     const explosionImg = "url('assets/images/icons/explosion.png')"
-    const squar = {
+    const square = {
          bomb: false,
          flag: false,
          open: false,
@@ -97,5 +97,5 @@ export function square(element){
             this.element.style.backgroundPosition = 'center'
          },
      };
-     return squar
+     return square
 }
