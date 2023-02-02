@@ -7,8 +7,10 @@ let squares;
 let firstClick = true
 let gameover = false
 let bombnumber = 0
+let configs = getDificult(level)
 
 start(getDificult(level))
+crono.showTimes(level[0])
 
 document.addEventListener("click", click)
 document.addEventListener("contextmenu", event => {
@@ -22,12 +24,12 @@ document.addEventListener("contextmenu", event => {
 
 function click(event){
     const element = event.target
-    const configs = getDificult(level)
+    
     let clicked
 
     const button = {
         START: function(){
-            start(configs)
+            start()
         },
         DIFICULT: function(){
             dificult(level)
@@ -88,9 +90,10 @@ function rightClick(element){
         defineText('.bomb-qtd',`${String.fromCodePoint(0x1F4A3)} ${bombnumber}`)
     }
 }
-function start(configs){
+function start(){
+    configs = getDificult(level)
     crono.cronoZero()
-    defineText('.result', '')
+    defineText('.result', 'Boa sorte')
     generateField(configs[0])
     firstClick = true
     squares = configs[0]*configs[0]
@@ -102,6 +105,7 @@ function dificult(level){
     let aux = level.shift()
     defineText('.dificult', level[0])
     level.push(aux)
+    crono.showTimes(level[0])
 }
 function around(position, clicked){
     let [x1, y1] = clicked
@@ -213,6 +217,7 @@ function win(){
     winBell.play()
     defineText('.result','Você ganhou')
     defineText('.bomb-qtd',`${String.fromCodePoint(0x1F4A3)} ${bombnumber}`)
+    crono.cronoTime(level[0])
     gameover = true
     
 }
