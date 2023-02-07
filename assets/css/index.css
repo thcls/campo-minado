@@ -1,9 +1,16 @@
 body{
     background-color: #1C1D27;
+    height: 100%;
+}
+table{
+    display: block;
+    text-align: center;
+    margin: auto;
 }
 .header{
+    display: flex;
     width: 30%;
-    height: 100%;
+    height: 100%;   
     margin: auto;
     text-align: center;
     box-sizing: border-box;
@@ -12,12 +19,18 @@ body{
     background-color: #F5F2F1;
     box-shadow: 2px 2px #F5F2F1;
     border-radius: 28px;
+    flex-flow: column nowrap;
+    align-items: center;
 }
 .camp{
     width: 70%;
+    display: flex;
     margin-left: 30%;
-    text-align: center;
     box-sizing: border-box;
+    flex-flow: column wrap;
+    align-items: center;
+    align-content: center;
+    justify-content: space-around;
 }
 h1{
     
@@ -39,28 +52,27 @@ h1{
     font-weight: bolder;
 }
 .result{
+    display: block;
     text-align: center;
     color: black;
     font-size: 20px;
     border:4px #CA3C68 solid;
-    width: 300px;
     border-radius: 10px;
-    margin-left: 21%;
     padding: 10px;
-
 }
 
 .status{
+    display: block;
     color: #000000;
     background-color: #F5F2F1;
     text-align: center;
     transition: color .2 linear;
     border-radius: 18px;
-    margin-left: 32%;
     margin-bottom: 10px;
     height: 100px;
     width: 480px;
     box-sizing: border-box;
+    margin-bottom: 3pt;
 }
 .timer, .bomb-qtd{
     font-size: 35px;
@@ -86,19 +98,15 @@ h1{
 }
 .best-time{
     font-size: 25px;
-    margin-top: 5em;
 }
 .place{
-    text-align: left;
-    margin-left: 40%;
+    text-align: center;
 }
 .thcls{
+    display: block;
     margin-top: 10em;
 }
-a:link {
-    color: #CA3C68;
-}
-a:visited {
+a:link, a:visited{
     color: #CA3C68;
 }
 a:hover {
