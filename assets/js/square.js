@@ -78,6 +78,7 @@ export function square(element){
          },
         boom(){
             this.backgroundImg(explosionImg)
+            this.flag = true
          },
         question(){
             this.removeFlag()

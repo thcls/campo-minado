@@ -209,7 +209,7 @@ function gameOver(clicked, square){
     square.boom()
     explosion.play()
     defineText('.result','Você perdeu')
-    endReveal(clicked)
+    endReveal()
 }
 function win(){
     crono.cronoStop(gameover)
@@ -221,19 +221,16 @@ function win(){
     gameover = true
     
 }
-function endReveal(clicked){
-    let time = 1
-    for(let i in minesWeeper){
-        for(let j in minesWeeper[i]){
-            time++
-            let position = minesWeeper[i][j]
-            if((Number(i) !== clicked[0] || Number(j) !== clicked[1]) && position.bomb && !position.flag){
-                setTimeout(function(){
-                    position.revealBomb()
-                }, 20*time)
-            }
-        }
-    }
+function endReveal(){
+    const camp = (minesWeeper.reduce((acc, value) =>{
+        return acc.concat(value.filter(value => value.bomb && !value.flag))
+    }))
+    
+    camp.map((value, index)=> {
+        setTimeout(function(){
+            value.revealBomb()
+        }, 20*(index+1))
+    })
 }
 function getDificult(level){
     const dificult = {
