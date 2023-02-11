@@ -209,7 +209,7 @@ function gameOver(square){
 function win(){
     crono.cronoStop(gameover)
     defineText('.result','Você ganhou')
-    defineText('.bomb-qtd',`${String.fromCodePoint(0x1F4A3)} ${bombnumber}`)
+    defineText('.bomb-qtd',`${String.fromCodePoint(0x1F4A3)} ${0}`)
     crono.cronoTime(level[0])
     gameover = true
     
