@@ -31,9 +31,6 @@ function click(event){
         START: function(){
             start()
         },
-        DIFICULT: function(){
-            dificult(level)
-        },
         INICIANTE: function(){
             dificult(level)
         },
@@ -159,7 +156,7 @@ function game(clicked,tam) {
     let [x,y] = clicked
     let square = minesWeeper[x][y]
     if(square.bomb && !square.flag){
-        gameOver(clicked, square)
+        gameOver(square)
         return
     }
     reveal(clicked, tam, square)
@@ -202,19 +199,15 @@ function rereveal(x,y,tam){
         }
     }
 }
-function gameOver(clicked, square){
+function gameOver(square){
     gameover = true
     crono.cronoStop(gameover)
-    let explosion = new Audio('/assets/sounds/NenadSimic - Muffled Distant Explosion.wav')
     square.boom()
-    explosion.play()
     defineText('.result','Você perdeu')
     endReveal()
 }
 function win(){
     crono.cronoStop(gameover)
-    let winBell = new Audio('/assets/sounds/hjm-glass_bell_1.wav')
-    winBell.play()
     defineText('.result','Você ganhou')
     defineText('.bomb-qtd',`${String.fromCodePoint(0x1F4A3)} ${bombnumber}`)
     crono.cronoTime(level[0])
@@ -229,7 +222,7 @@ function endReveal(){
     camp.map((value, index)=> {
         setTimeout(function(){
             value.revealBomb()
-        }, 20*(index+1))
+        }, 30*(index+1))
     })
 }
 function getDificult(level){
