@@ -1,5 +1,5 @@
 import * as crono from "./crono.js";
-import {square as square} from "./square.js";
+import {Square as Square} from "./Square.js";
 
 let minesWeeper = []
 const level = ['INICIANTE', 'INTERMEDIARIO','EXPERTE']
@@ -203,8 +203,8 @@ function gameOver(square){
     gameover = true
     crono.cronoStop(gameover)
     square.boom()
-    defineText('.result','Você perdeu')
     endReveal()
+    defineText('.result','Você perdeu')
 }
 function win(){
     crono.cronoStop(gameover)
@@ -222,7 +222,8 @@ function endReveal(){
     camp.map((value, index)=> {
         setTimeout(function(){
             value.revealBomb()
-        }, 30*(index+1))
+            console.log(18*(index*8))
+        }, 70 * index)
     })
 }
 function getDificult(level){
@@ -255,7 +256,7 @@ function generateField(dificult){
             td.appendChild(button)
 
             tr.appendChild(td)
-            line.push(square(button))
+            line.push(new Square(button))
         }
 
         field.appendChild(tr)
