@@ -1,9 +1,9 @@
 export function Square(element){
-         this.bomb = false
-         this.flag = false
-         this.open = false
-         this.bombQtd = 0
-         this.element = element
+        this.bomb = false
+        this.flag = false
+        this.open = false
+        this.bombQtd = 0
+        this.element = element
 }
 Square.prototype.getBombF = function(){
     return this.bomb

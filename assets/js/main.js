@@ -1,5 +1,5 @@
 import * as crono from "./crono.js";
-import {Square as Square} from "./Square.js";
+import {Square as Square} from "./square.js";
 
 let minesWeeper = []
 const level = ['INICIANTE', 'INTERMEDIARIO','EXPERTE']
