@@ -257,6 +257,7 @@ function generateField(dificult){
 
             tr.appendChild(td)
             line.push(new Square(button))
+            console.log(line)
         }
 
         field.appendChild(tr)
