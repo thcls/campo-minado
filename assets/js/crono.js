@@ -7,7 +7,6 @@ const d = {
 }
 
 if(localStorage.getItem('times')===null){
-    console.log(localStorage.getItem('times'))
     const ts = [[null,null,null],[null,null,null],[null,null,null]]
     const timesJSON = JSON.stringify(ts)
     localStorage.setItem('times',timesJSON)

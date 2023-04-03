@@ -222,7 +222,6 @@ function endReveal(){
     camp.map((value, index)=> {
         setTimeout(function(){
             value.revealBomb()
-            console.log(18*(index*8))
         }, 70 * index)
     })
 }
@@ -257,7 +256,6 @@ function generateField(dificult){
 
             tr.appendChild(td)
             line.push(new Square(button))
-            console.log(line)
         }
 
         field.appendChild(tr)
