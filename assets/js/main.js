@@ -8,6 +8,7 @@ let firstClick = true
 let gameover = false
 let bombnumber = 0
 let configs = getDificult(level)
+let gameLevel = null
 
 start(getDificult(level))
 crono.showTimes(level[0])
@@ -89,6 +90,8 @@ function rightClick(element){
 }
 function start(){
     configs = getDificult(level)
+    gameLevel = level[0]
+    crono.showTimes(gameLevel)
     crono.cronoZero()
     defineText('.result', 'Boa sorte')
     generateField(configs[0])
@@ -102,7 +105,6 @@ function dificult(level){
     let aux = level.shift()
     defineText('.dificult', level[0])
     level.push(aux)
-    crono.showTimes(level[0])
 }
 function around(position, clicked){
     let [x1, y1] = clicked
@@ -210,7 +212,7 @@ function win(){
     crono.cronoStop(gameover)
     defineText('.result','Você ganhou')
     defineText('.bomb-qtd',`${String.fromCodePoint(0x1F4A3)} ${0}`)
-    crono.cronoTime(level[0])
+    crono.cronoTime(gameLevel)
     gameover = true
     
 }
@@ -224,6 +226,8 @@ function endReveal(){
             value.revealBomb()
         }, 70 * index)
     })
+    crono.cronoTime(gameLevel)
+
 }
 function getDificult(level){
     const dificult = {

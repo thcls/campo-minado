@@ -16,7 +16,7 @@ export function cronoStart(){
     const timer = document.querySelector('.timer')
     cronometro = setInterval(function(){
         time.setMilliseconds(time.getMilliseconds()+10)
-        timer.innerHTML = `${String.fromCodePoint(0x23f2)} ${time.toLocaleTimeString('pt-BR',{hour12:false,timeZone:'GMT'}).slice(3)}.${getHundredth(time)}`
+        timer.innerHTML = `${String.fromCodePoint(0x23f2)} ${time.toLocaleTimeString('pt-BR',{hour12:false,timeZone:'GMT'}).slice(3)}:${getHundredth(time)}`
     }, 10)
 }
 export function getHundredth(time){
@@ -49,13 +49,20 @@ export function cronoZero(){
     const timer = document.querySelector('.timer')
     status.style.color = timer.style.color = '#000000'
     
-    timer.innerHTML = String.fromCodePoint(0x23f2) + ' 00:00.00'
+    timer.innerHTML = String.fromCodePoint(0x23f2) + ' 00:00:00'
 }
 export function cronoTime(dificult){
     const t = getTimes()
     const times = t[d[dificult]]
-    
-    times.push(`${time.getMinutes()}:${time.getSeconds()}.${getHundredth(time)}`)
+    let seconds = time.getSeconds()
+    let minutes = time.getMinutes()
+    if(seconds - 10 < 0){
+        seconds = '0'+String(seconds)
+    }
+    if(minutes - 10 < 0){
+        minutes = '0'+ String(minutes)
+    }
+    times.push(`${minutes}:${seconds}:${getHundredth(time)}`)
     times.sort()
     times.pop()
     setTimes(dificult,times)
@@ -85,7 +92,7 @@ export function showTimes(dificult){
         if(times[i]){
             places[i].innerText = `${medals[i]}  ${times[i]}`
         }else{
-            places[i].innerText = `${medals[i]}  --:--.--`
+            places[i].innerText = `${medals[i]}  --:--:--`
         }
     }
 }

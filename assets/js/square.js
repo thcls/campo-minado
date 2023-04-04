@@ -11,12 +11,10 @@ export class Square {
         return this.bomb
     }
     putFlag() {
-        if (!this.open) {
-            if (!this.flag) {
-                this.flag = true
-                const flagImg = "url('assets/images/icons/flag.png')"
-                this.backgroundImg(flagImg)
-            }
+        if (!this.open && !this.flag) {
+            this.flag = true
+            const flagImg = "url('assets/images/icons/flag.png')"
+            this.backgroundImg(flagImg)
         }
     }
     removeFlag() {
